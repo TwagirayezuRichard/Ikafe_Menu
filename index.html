@@ -1,0 +1,750 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Ikafé Haven — Menu</title>
+<link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,600;1,300;1,400&family=Jost:wght@300;400;500&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --cream: #f5f0e8;
+    --parchment: #ede5d0;
+    --brown: #5c3d2e;
+    --espresso: #2c1a0e;
+    --sage: #7a9e7e;
+    --gold: #b8903a;
+    --gold-light: #d4af6a;
+    --rust: #9b4f2a;
+    --text: #2c1a0e;
+    --muted: #7a6a58;
+  }
+
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+
+  body {
+    background-color: var(--cream);
+    color: var(--text);
+    font-family: 'Jost', sans-serif;
+    font-weight: 300;
+    min-height: 100vh;
+  }
+
+  /* ——— HERO ——— */
+  .hero {
+    background: var(--espresso);
+    position: relative;
+    text-align: center;
+    padding: 70px 24px 60px;
+    overflow: hidden;
+  }
+  .hero::before {
+    content: '';
+    position: absolute; inset: 0;
+    background: repeating-linear-gradient(
+      45deg,
+      transparent,
+      transparent 30px,
+      rgba(255,255,255,0.02) 30px,
+      rgba(255,255,255,0.02) 31px
+    );
+  }
+  .hero-badge {
+    display: inline-block;
+    border: 1px solid var(--gold);
+    color: var(--gold-light);
+    font-family: 'Jost', sans-serif;
+    font-size: 11px;
+    letter-spacing: 4px;
+    text-transform: uppercase;
+    padding: 6px 20px;
+    margin-bottom: 28px;
+  }
+  .hero h1 {
+    font-family: 'Cormorant Garamond', serif;
+    font-size: clamp(52px, 10vw, 90px);
+    font-weight: 300;
+    color: var(--cream);
+    line-height: 1;
+    letter-spacing: -1px;
+  }
+  .hero h1 span { color: var(--gold-light); font-style: italic; }
+  .hero-sub {
+    color: var(--muted);
+    font-size: 13px;
+    letter-spacing: 5px;
+    text-transform: uppercase;
+    margin-top: 16px;
+  }
+  .hero-hours {
+    color: var(--gold-light);
+    font-size: 12px;
+    letter-spacing: 2px;
+    text-transform: uppercase;
+    margin-top: 12px;
+    font-weight: 400;
+  }
+  .hero-line {
+    width: 60px;
+    height: 1px;
+    background: var(--gold);
+    margin: 28px auto 0;
+  }
+
+  /* ——— NAV TABS ——— */
+  .tab-nav {
+    position: sticky;
+    top: 0;
+    z-index: 100;
+    background: var(--espresso);
+    display: flex;
+    justify-content: center;
+    flex-wrap: wrap;
+    gap: 0;
+    border-bottom: 1px solid rgba(184,144,58,0.3);
+  }
+  .tab-btn {
+    background: none;
+    border: none;
+    color: rgba(245,240,232,0.5);
+    font-family: 'Jost', sans-serif;
+    font-size: 11px;
+    letter-spacing: 3px;
+    text-transform: uppercase;
+    padding: 18px 20px;
+    cursor: pointer;
+    position: relative;
+    transition: color 0.3s;
+  }
+  .tab-btn::after {
+    content: '';
+    position: absolute;
+    bottom: 0; left: 50%; right: 50%;
+    height: 2px;
+    background: var(--gold);
+    transition: left 0.3s, right 0.3s;
+  }
+  .tab-btn.active { color: var(--gold-light); }
+  .tab-btn.active::after { left: 16px; right: 16px; }
+  .tab-btn:hover { color: var(--cream); }
+
+  /* ——— MAIN LAYOUT ——— */
+  .menu-section { display: none; padding: 60px 20px 80px; max-width: 1100px; margin: 0 auto; }
+  .menu-section.active { display: block; }
+
+  /* ——— CATEGORY HEADING ——— */
+  .cat-header {
+    display: flex;
+    align-items: center;
+    gap: 20px;
+    margin: 56px 0 28px;
+  }
+  .cat-header:first-child { margin-top: 0; }
+  .cat-title {
+    font-family: 'Cormorant Garamond', serif;
+    font-size: 28px;
+    font-weight: 600;
+    color: var(--espresso);
+    white-space: nowrap;
+    letter-spacing: 0.5px;
+  }
+  .cat-line {
+    flex: 1;
+    height: 1px;
+    background: linear-gradient(to right, var(--gold), transparent);
+  }
+  .cat-icon {
+    font-size: 20px;
+    opacity: 0.6;
+  }
+
+  /* ——— SUBCATEGORY ——— */
+  .sub-header {
+    font-family: 'Jost', sans-serif;
+    font-size: 10px;
+    letter-spacing: 4px;
+    text-transform: uppercase;
+    color: var(--gold);
+    border-left: 2px solid var(--gold);
+    padding-left: 12px;
+    margin: 32px 0 16px;
+  }
+
+  /* ——— ITEM GRID ——— */
+  .item-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(320px, 1fr));
+    gap: 2px;
+  }
+
+  /* ——— MENU ITEM ——— */
+  .item {
+    background: var(--parchment);
+    padding: 18px 22px;
+    position: relative;
+    transition: background 0.25s, transform 0.25s;
+    cursor: default;
+  }
+  .item:hover {
+    background: #e8dfc8;
+    transform: translateX(3px);
+  }
+  .item-top {
+    display: flex;
+    justify-content: space-between;
+    align-items: flex-start;
+    gap: 12px;
+  }
+  .item-name {
+    font-family: 'Cormorant Garamond', serif;
+    font-size: 18px;
+    font-weight: 600;
+    color: var(--espresso);
+    line-height: 1.2;
+  }
+  .item-price {
+    font-family: 'Cormorant Garamond', serif;
+    font-size: 16px;
+    font-weight: 400;
+    color: var(--rust);
+    white-space: nowrap;
+    flex-shrink: 0;
+  }
+  .item-price .currency {
+    font-size: 11px;
+    font-family: 'Jost', sans-serif;
+    font-weight: 400;
+    letter-spacing: 1px;
+    color: var(--muted);
+  }
+  .item-desc {
+    font-size: 13px;
+    color: var(--muted);
+    line-height: 1.6;
+    margin-top: 5px;
+    font-style: italic;
+  }
+  .item-divider { width: 24px; height: 1px; background: var(--gold-light); margin-top: 10px; opacity: 0.5; }
+
+  /* ——— SIDE NOTE ——— */
+  .side-note {
+    background: var(--sage);
+    color: white;
+    padding: 14px 20px;
+    font-size: 12px;
+    line-height: 1.7;
+    margin: 16px 0;
+    border-left: 3px solid var(--gold);
+  }
+
+  /* ——— FOOTER ——— */
+  footer {
+    background: var(--espresso);
+    color: rgba(245,240,232,0.4);
+    text-align: center;
+    padding: 30px;
+    font-size: 12px;
+    letter-spacing: 2px;
+    text-transform: uppercase;
+  }
+  footer span { color: var(--gold-light); }
+  .footer-contact {
+    margin: 15px 0;
+    font-size: 13px;
+    letter-spacing: 1px;
+  }
+  .footer-social {
+    margin-top: 15px;
+    display: flex;
+    justify-content: center;
+    gap: 20px;
+    align-items: center;
+  }
+  .social-icon {
+    color: rgba(245,240,232,0.6);
+    text-decoration: none;
+    font-size: 18px;
+    transition: color 0.3s, transform 0.2s;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    width: 36px;
+    height: 36px;
+    border: 1px solid rgba(184,144,58,0.3);
+    border-radius: 50%;
+    background: rgba(255,255,255,0.05);
+  }
+  .social-icon:hover {
+    color: var(--gold-light);
+    transform: translateY(-2px);
+    border-color: var(--gold);
+  }
+
+  /* ——— RESPONSIVE DESIGN ——— */
+  
+  /* Large Tablets and Small Laptops */
+  @media (max-width: 1024px) {
+    .hero { padding: 60px 20px 50px; }
+    .hero h1 { font-size: clamp(42px, 8vw, 75px); }
+    .item-grid { grid-template-columns: repeat(auto-fill, minmax(280px, 1fr)); }
+  }
+  
+  /* Tablets */
+  @media (max-width: 768px) {
+    .hero { padding: 50px 20px 40px; }
+    .hero h1 { font-size: clamp(36px, 7vw, 65px); }
+    .hero-badge { font-size: 10px; letter-spacing: 3px; }
+    .hero-sub { font-size: 11px; letter-spacing: 3px; }
+    .hero-hours { font-size: 10px; letter-spacing: 1px; }
+    .tab-btn { padding: 16px 14px; font-size: 10px; letter-spacing: 2px; }
+    .item-grid { grid-template-columns: repeat(auto-fill, minmax(250px, 1fr)); gap: 1px; }
+    .cat-title { font-size: 24px; }
+    .item { padding: 16px 18px; }
+    .item-name { font-size: 16px; }
+    .item-price { font-size: 14px; }
+    .item-desc { font-size: 12px; }
+    .footer { padding: 25px 20px; }
+    .social-icon { width: 32px; height: 32px; font-size: 16px; }
+  }
+  
+  /* Large Smartphones */
+  @media (max-width: 600px) {
+    .hero { padding: 40px 16px 35px; }
+    .hero h1 { font-size: clamp(32px, 6vw, 55px); }
+    .hero-badge { font-size: 9px; letter-spacing: 2px; margin-bottom: 20px; }
+    .hero-sub { font-size: 10px; letter-spacing: 2px; margin-top: 12px; }
+    .hero-hours { font-size: 9px; letter-spacing: 1px; margin-top: 10px; }
+    .hero-line { margin: 20px auto 0; width: 50px; }
+    .tab-btn { padding: 14px 10px; font-size: 9px; letter-spacing: 1.5px; }
+    .menu-section { padding: 40px 16px 60px; }
+    .cat-header { margin: 40px 0 20px; gap: 15px; }
+    .cat-title { font-size: 22px; }
+    .cat-icon { font-size: 18px; }
+    .item-grid { grid-template-columns: 1fr; }
+    .item { padding: 14px 16px; }
+    .item-name { font-size: 15px; }
+    .item-price { font-size: 13px; }
+    .item-desc { font-size: 11px; margin-top: 4px; }
+    .sub-header { font-size: 9px; letter-spacing: 3px; margin: 24px 0 12px; }
+    .side-note { font-size: 11px; padding: 12px 16px; margin: 12px 0; }
+    .footer { padding: 20px 16px; font-size: 11px; }
+    .footer-contact { font-size: 12px; }
+    .social-icon { width: 30px; height: 30px; font-size: 14px; }
+    .footer-social { gap: 15px; }
+  }
+  
+  /* Small Smartphones */
+  @media (max-width: 400px) {
+    .hero { padding: 30px 12px 25px; }
+    .hero h1 { font-size: clamp(28px, 5vw, 45px); }
+    .hero-badge { font-size: 8px; letter-spacing: 1.5px; margin-bottom: 15px; }
+    .hero-sub { font-size: 9px; letter-spacing: 1.5px; margin-top: 10px; }
+    .hero-hours { font-size: 8px; letter-spacing: 0.5px; margin-top: 8px; }
+    .hero-line { margin: 15px auto 0; width: 40px; }
+    .tab-btn { padding: 12px 8px; font-size: 8px; letter-spacing: 1px; }
+    .menu-section { padding: 30px 12px 50px; }
+    .cat-header { margin: 30px 0 15px; gap: 12px; }
+    .cat-title { font-size: 20px; }
+    .cat-icon { font-size: 16px; }
+    .item { padding: 12px 14px; }
+    .item-name { font-size: 14px; }
+    .item-price { font-size: 12px; }
+    .item-desc { font-size: 10px; }
+    .sub-header { font-size: 8px; letter-spacing: 2px; margin: 20px 0 10px; }
+    .side-note { font-size: 10px; padding: 10px 14px; margin: 10px 0; }
+    .footer { padding: 15px 12px; font-size: 10px; }
+    .footer-contact { font-size: 11px; }
+    .social-icon { width: 28px; height: 28px; font-size: 12px; }
+    .footer-social { gap: 12px; }
+  }
+  
+  /* Landscape orientation adjustments */
+  @media (max-height: 600px) and (orientation: landscape) {
+    .hero { padding: 30px 20px 25px; }
+    .hero h1 { font-size: clamp(24px, 4vw, 40px); }
+    .hero-badge { margin-bottom: 15px; }
+    .hero-sub { margin-top: 8px; }
+    .hero-hours { margin-top: 6px; }
+    .hero-line { margin: 15px auto 0; }
+  }
+</style>
+</head>
+<body>
+
+<!-- HERO -->
+<div class="hero">
+  <div class="hero-badge">Kigali, Rwanda</div>
+  <h1>Ikafé <span>Haven</span></h1>
+  <div class="hero-sub">Food &amp; Drinks Menu</div>
+  <div class="hero-hours">🕐 Open Monday to Sunday 24/7</div>
+  <div class="hero-line"></div>
+</div>
+
+<!-- TABS -->
+<nav class="tab-nav">
+  <button class="tab-btn active" onclick="showTab('drinks')">☕ Drinks</button>
+  <button class="tab-btn" onclick="showTab('breakfast')">🍳 Breakfast</button>
+  <button class="tab-btn" onclick="showTab('mains')">🍽 Mains</button>
+  <button class="tab-btn" onclick="showTab('pasta-wraps')">🌯 Pasta &amp; Wraps</button>
+  <button class="tab-btn" onclick="showTab('desserts')">🍰 Desserts</button>
+</nav>
+
+<!-- ═══════════════ DRINKS ═══════════════ -->
+<section id="drinks" class="menu-section active">
+
+  <!-- COFFEE CLASSICS -->
+  <div class="cat-header">
+    <span class="cat-icon">☕</span>
+    <h2 class="cat-title">Coffee Classics</h2>
+    <div class="cat-line"></div>
+  </div>
+  <div class="sub-header">Single / Double</div>
+  <div class="item-grid">
+    <div class="item"><div class="item-top"><div class="item-name">Espresso</div><div class="item-price">1,000 <span class="currency">/ 1,500 RWF</span></div></div><div class="item-desc">Rich, concentrated coffee shot.</div><div class="item-divider"></div></div>
+    <div class="item"><div class="item-top"><div class="item-name">Americano</div><div class="item-price">2,000 <span class="currency">/ 2,000 RWF</span></div></div><div class="item-desc">Espresso diluted with hot water.</div><div class="item-divider"></div></div>
+    <div class="item"><div class="item-top"><div class="item-name">Macchiato</div><div class="item-price">2,500 <span class="currency">/ 2,500 RWF</span></div></div><div class="item-desc">Espresso topped with a dash of milk foam.</div><div class="item-divider"></div></div>
+    <div class="item"><div class="item-top"><div class="item-name">Cappuccino</div><div class="item-price">2,500 <span class="currency">/ 2,500 RWF</span></div></div><div class="item-desc">Equal parts espresso, steamed milk, and foam.</div><div class="item-divider"></div></div>
+    <div class="item"><div class="item-top"><div class="item-name">Latte</div><div class="item-price">2,500 <span class="currency">/ 2,500 RWF</span></div></div><div class="item-desc">Espresso with steamed milk and light foam.</div><div class="item-divider"></div></div>
+    <div class="item"><div class="item-top"><div class="item-name">Flat White</div><div class="item-price">2,500 <span class="currency">/ 2,500 RWF</span></div></div><div class="item-desc">Smooth espresso with silky milk.</div><div class="item-divider"></div></div>
+    <div class="item"><div class="item-top"><div class="item-name">Mocha</div><div class="item-price">3,500 <span class="currency">/ 3,500 RWF</span></div></div><div class="item-desc">Espresso, chocolate, and steamed milk.</div><div class="item-divider"></div></div>
+    <div class="item"><div class="item-top"><div class="item-name">White Chocolate Mocha</div><div class="item-price">4,000 <span class="currency">/ 4,000 RWF</span></div></div><div class="item-desc">Espresso combined with steamed milk and white chocolate syrup.</div><div class="item-divider"></div></div>
+    <div class="item"><div class="item-top"><div class="item-name">Vanilla Latte</div><div class="item-price">4,000 <span class="currency">/ 4,000 RWF</span></div></div><div class="item-desc">Espresso blended with steamed milk and infused with vanilla syrup.</div><div class="item-divider"></div></div>
+    <div class="item"><div class="item-top"><div class="item-name">Caramel Macchiato</div><div class="item-price">4,000 <span class="currency">/ 4,000 RWF</span></div></div><div class="item-desc">Steamed milk marked with bold espresso and layered with vanilla syrup.</div><div class="item-divider"></div></div>
+    <div class="item"><div class="item-top"><div class="item-name">African Coffee</div><div class="item-price">3,000 <span class="currency">/ 3,000 RWF</span></div></div><div class="item-desc">A fusion of espresso and steamed milk, infused with ginger.</div><div class="item-divider"></div></div>
+    <div class="item"><div class="item-top"><div class="item-name">English Coffee</div><div class="item-price">3,000 <span class="currency">/ 3,000 RWF</span></div></div><div class="item-desc">Strong brewed black coffee served with milk on the side.</div><div class="item-divider"></div></div>
+    <div class="item"><div class="item-top"><div class="item-name">Decaf</div><div class="item-price">5,000 <span class="currency">/ 5,000 RWF</span></div></div><div class="item-desc">All the flavour, none of the caffeine. Perfect for any time of day or night.</div><div class="item-divider"></div></div>
+  </div>
+
+  <!-- COLD COFFEE -->
+  <div class="cat-header">
+    <span class="cat-icon">🧊</span>
+    <h2 class="cat-title">Cold Coffee</h2>
+    <div class="cat-line"></div>
+  </div>
+  <div class="item-grid">
+    <div class="item"><div class="item-top"><div class="item-name">Iced Americano</div><div class="item-price">2,500 <span class="currency">RWF</span></div></div><div class="item-desc">Espresso poured over cold water and ice.</div><div class="item-divider"></div></div>
+    <div class="item"><div class="item-top"><div class="item-name">Iced Latte</div><div class="item-price">3,500 <span class="currency">RWF</span></div></div><div class="item-desc">Chilled milk over espresso, served on ice.</div><div class="item-divider"></div></div>
+    <div class="item"><div class="item-top"><div class="item-name">Iced Vanilla Latte</div><div class="item-price">4,500 <span class="currency">RWF</span></div></div><div class="item-desc">Smooth iced latte with sweet vanilla syrup.</div><div class="item-divider"></div></div>
+    <div class="item"><div class="item-top"><div class="item-name">Iced Caramel Macchiato</div><div class="item-price">4,500 <span class="currency">RWF</span></div></div><div class="item-desc">Iced macchiato with sweet caramel syrup.</div><div class="item-divider"></div></div>
+    <div class="item"><div class="item-top"><div class="item-name">Iced Mocha</div><div class="item-price">4,000 <span class="currency">RWF</span></div></div><div class="item-desc">Espresso, chocolate, and milk over ice.</div><div class="item-divider"></div></div>
+    <div class="item"><div class="item-top"><div class="item-name">Affogato (Cold Dessert Drink)</div><div class="item-price">4,500 <span class="currency">RWF</span></div></div><div class="item-desc">Vanilla ice cream drowned in hot espresso.</div><div class="item-divider"></div></div>
+  </div>
+
+  <!-- TEA & HERBAL INFUSIONS -->
+  <div class="cat-header">
+    <span class="cat-icon">🍃</span>
+    <h2 class="cat-title">Tea &amp; Herbal Infusions</h2>
+    <div class="cat-line"></div>
+  </div>
+  <div class="item-grid">
+    <div class="item"><div class="item-top"><div class="item-name">Black Tea</div><div class="item-price">1,500 <span class="currency">RWF</span></div></div><div class="item-desc">Rwandan black tea.</div><div class="item-divider"></div></div>
+    <div class="item"><div class="item-top"><div class="item-name">Rwandan Tea</div><div class="item-price">2,500 <span class="currency">RWF</span></div></div><div class="item-desc">A creamy blend of black tea and milk, without a drop of water.</div><div class="item-divider"></div></div>
+    <div class="item"><div class="item-top"><div class="item-name">African Tea</div><div class="item-price">2,500 <span class="currency">(Cup) / 3,500 (Pot) RWF</span></div></div><div class="item-desc">A full-bodied brew made with Rwandan tea, fresh milk, ginger, lemongrass, and a blend of warming tea masala, simmered to perfection without a drop of water.</div><div class="item-divider"></div></div>
+    <div class="item"><div class="item-top"><div class="item-name">English Tea</div><div class="item-price">3,500 <span class="currency">RWF</span></div></div><div class="item-desc">Black tea served with milk aside.</div><div class="item-divider"></div></div>
+    <div class="item"><div class="item-top"><div class="item-name">Hot Lemon &amp; Ginger</div><div class="item-price">3,000 <span class="currency">(Cup) / 4,000 (Pot) RWF</span></div></div><div class="item-desc">Fresh ginger and lemon steeped in hot water, sweetened with natural honey.</div><div class="item-divider"></div></div>
+    <div class="item"><div class="item-top"><div class="item-name">Spiced Tea</div><div class="item-price">4,000 <span class="currency">RWF</span></div></div><div class="item-desc">Black tea infused with ginger, cinnamon, cloves, and cardamom. Sweetened with natural honey.</div><div class="item-divider"></div></div>
+    <div class="item"><div class="item-top"><div class="item-name">Wellness Tea</div><div class="item-price">4,500 <span class="currency">RWF</span></div></div><div class="item-desc">A healing blend of hot water, fresh ginger, lemon, umuravumba, mint, and natural honey.</div><div class="item-divider"></div></div>
+    <div class="item"><div class="item-top"><div class="item-name">Hibiscus Infusion</div><div class="item-price">4,000 <span class="currency">RWF</span></div></div><div class="item-desc">A vibrant, tangy herbal tea made from dried hibiscus petals — naturally caffeine-free, refreshing, and rich in antioxidants.</div><div class="item-divider"></div></div>
+    <div class="item"><div class="item-top"><div class="item-name">Chamomile Infusion</div><div class="item-price">4,000 <span class="currency">RWF</span></div></div><div class="item-desc">A delicate, naturally caffeine-free herbal infusion made from chamomile flowers. Lightly floral and calming, ideal for relaxation.</div><div class="item-divider"></div></div>
+    <div class="item"><div class="item-top"><div class="item-name">Mint Tea</div><div class="item-price">3,000 <span class="currency">RWF</span></div></div><div class="item-desc">A refreshing herbal infusion made with fresh mint leaves — cooling, calming, and naturally caffeine-free.</div><div class="item-divider"></div></div>
+    <div class="item"><div class="item-top"><div class="item-name">Green Tea</div><div class="item-price">2,500 <span class="currency">RWF</span></div></div><div class="item-desc">Delicately earthy and smooth, this antioxidant-rich tea is sourced from the lush hills of Rwanda — pure, calming, and naturally uplifting.</div><div class="item-divider"></div></div>
+    <div class="item"><div class="item-top"><div class="item-name">Tree Tomato Tea</div><div class="item-price">5,000 <span class="currency">RWF</span></div></div><div class="item-desc">A naturally fruity tea made from fresh tree tomatoes. Rich in antioxidants and vitamin C.</div><div class="item-divider"></div></div>
+    <div class="item"><div class="item-top"><div class="item-name">Passion Tea</div><div class="item-price">5,000 <span class="currency">RWF</span></div></div><div class="item-desc">Fruity infusion with the flavour of passion fruit — comforting, aromatic, and naturally uplifting.</div><div class="item-divider"></div></div>
+  </div>
+
+  <!-- ICED TEA -->
+  <div class="sub-header">Iced Tea</div>
+  <div class="item-grid">
+    <div class="item"><div class="item-top"><div class="item-name">Iced Black Tea</div><div class="item-price">2,000 <span class="currency">RWF</span></div></div><div class="item-divider"></div></div>
+    <div class="item"><div class="item-top"><div class="item-name">Iced Rwandan Tea</div><div class="item-price">3,000 <span class="currency">RWF</span></div></div><div class="item-divider"></div></div>
+    <div class="item"><div class="item-top"><div class="item-name">Iced African Tea</div><div class="item-price">3,500 <span class="currency">RWF</span></div></div><div class="item-divider"></div></div>
+    <div class="item"><div class="item-top"><div class="item-name">Iced Lemon &amp; Ginger</div><div class="item-price">3,500 <span class="currency">RWF</span></div></div><div class="item-divider"></div></div>
+  </div>
+
+  <!-- OTHER FAVORITES -->
+  <div class="cat-header">
+    <span class="cat-icon">⭐</span>
+    <h2 class="cat-title">Other Favourites</h2>
+    <div class="cat-line"></div>
+  </div>
+  <div class="item-grid">
+    <div class="item"><div class="item-top"><div class="item-name">Hot Chocolate</div><div class="item-price">3,500 <span class="currency">RWF</span></div></div><div class="item-desc">A blend of chocolate powder and chocolate sauce, steamed with milk and finished with a dusting of cocoa powder — smooth, rich, and indulgent.</div><div class="item-divider"></div></div>
+    <div class="item"><div class="item-top"><div class="item-name">Inshyushyu</div><div class="item-price">1,000 <span class="currency">RWF</span></div></div><div class="item-desc">Rwandan milk served hot or cold.</div><div class="item-divider"></div></div>
+    <div class="item"><div class="item-top"><div class="item-name">Ikivuguto</div><div class="item-price">1,500 <span class="currency">RWF</span></div></div><div class="item-desc">A traditional Rwandan fermented milk — thick, tangy, and naturally refreshing. A simple, probiotic-rich drink with deep, authentic flavour.</div><div class="item-divider"></div></div>
+  </div>
+
+  <!-- FRESH JUICES -->
+  <div class="cat-header">
+    <span class="cat-icon">🍊</span>
+    <h2 class="cat-title">Fresh Juices</h2>
+    <div class="cat-line"></div>
+  </div>
+  <div class="item-grid">
+    <div class="item"><div class="item-top"><div class="item-name">Passion Juice</div><div class="item-price">4,000 <span class="currency">RWF</span></div></div><div class="item-desc">Freshly squeezed passion fruit.</div><div class="item-divider"></div></div>
+    <div class="item"><div class="item-top"><div class="item-name">Tree Tomato Juice</div><div class="item-price">4,000 <span class="currency">RWF</span></div></div><div class="item-desc">Tangy and rich in vitamin C.</div><div class="item-divider"></div></div>
+    <div class="item"><div class="item-top"><div class="item-name">Mango Juice</div><div class="item-price">4,500 <span class="currency">RWF</span></div></div><div class="item-desc">Thick, smooth, and sweet.</div><div class="item-divider"></div></div>
+    <div class="item"><div class="item-top"><div class="item-name">Pineapple Juice</div><div class="item-price">3,500 <span class="currency">RWF</span></div></div><div class="item-desc">Juicy and tropical, made from ripe local pineapples.</div><div class="item-divider"></div></div>
+    <div class="item"><div class="item-top"><div class="item-name">Mixed Juice (Fruit Cocktail)</div><div class="item-price">4,000 <span class="currency">RWF</span></div></div><div class="item-desc">A refreshing blend of more than two seasonal fruits of your choice.</div><div class="item-divider"></div></div>
+  </div>
+
+  <!-- SMOOTHIES -->
+  <div class="cat-header">
+    <span class="cat-icon">🥤</span>
+    <h2 class="cat-title">Smoothies</h2>
+    <div class="cat-line"></div>
+  </div>
+  <div class="item-grid">
+    <div class="item"><div class="item-top"><div class="item-name">Banana Boost</div><div class="item-price">4,000 <span class="currency">RWF</span></div></div><div class="item-desc">Ripe local bananas blended with milk and a drizzle of honey.</div><div class="item-divider"></div></div>
+    <div class="item"><div class="item-top"><div class="item-name">Mango Delight</div><div class="item-price">4,500 <span class="currency">RWF</span></div></div><div class="item-desc">Fresh mango blended with banana and milk for a smooth, sunny drink.</div><div class="item-divider"></div></div>
+    <div class="item"><div class="item-top"><div class="item-name">Tropical Bliss</div><div class="item-price">4,500 <span class="currency">RWF</span></div></div><div class="item-desc">Mango, pineapple, banana, and tree tomato blended with milk.</div><div class="item-divider"></div></div>
+    <div class="item"><div class="item-top"><div class="item-name">Strawberry Smoothie</div><div class="item-price">6,000 <span class="currency">RWF</span></div></div><div class="item-desc">A creamy blend of strawberries and milk, blended to perfection. Sweet, fruity, and refreshing.</div><div class="item-divider"></div></div>
+  </div>
+
+  <!-- ICE CREAM MILKSHAKES -->
+  <div class="cat-header">
+    <span class="cat-icon">🍦</span>
+    <h2 class="cat-title">Ice Cream Milkshakes</h2>
+    <div class="cat-line"></div>
+  </div>
+  <div class="item-grid">
+    <div class="item"><div class="item-top"><div class="item-name">Vanilla Milkshake</div><div class="item-price">5,000 <span class="currency">RWF</span></div></div><div class="item-desc">Classic and creamy with vanilla ice cream, milk, and whipped cream.</div><div class="item-divider"></div></div>
+    <div class="item"><div class="item-top"><div class="item-name">Chocolate Milkshake</div><div class="item-price">5,000 <span class="currency">RWF</span></div></div><div class="item-desc">Chocolate ice cream blended with milk and topped with whipped cream.</div><div class="item-divider"></div></div>
+    <div class="item"><div class="item-top"><div class="item-name">Strawberry Milkshake</div><div class="item-price">5,500 <span class="currency">RWF</span></div></div><div class="item-desc">Strawberry ice cream and real fruit blended with milk. A topping of whipped cream.</div><div class="item-divider"></div></div>
+    <div class="item"><div class="item-top"><div class="item-name">Banana Split Shake</div><div class="item-price">5,000 <span class="currency">RWF</span></div></div><div class="item-desc">Banana, vanilla ice cream, and whipped cream on top.</div><div class="item-divider"></div></div>
+    <div class="item"><div class="item-top"><div class="item-name">Cookies &amp; Cream Shake</div><div class="item-price">6,000 <span class="currency">RWF</span></div></div><div class="item-desc">Vanilla ice cream and crushed cookies. Sweet, crunchy, and creamy.</div><div class="item-divider"></div></div>
+    <div class="item"><div class="item-top"><div class="item-name">Peanut Butter Shake</div><div class="item-price">6,500 <span class="currency">RWF</span></div></div><div class="item-desc">Ice cream blended with peanut butter and banana for a rich, nutty treat.</div><div class="item-divider"></div></div>
+    <div class="item"><div class="item-top"><div class="item-name">Coffee Milkshake</div><div class="item-price">8,000 <span class="currency">RWF</span></div></div><div class="item-desc">A bold mix of ice cream and espresso. Perfect for coffee and dessert lovers.</div><div class="item-divider"></div></div>
+    <div class="item"><div class="item-top"><div class="item-name">Mocha Shake</div><div class="item-price">5,500 <span class="currency">RWF</span></div></div><div class="item-desc">A blend of ice cream, espresso, milk, and chocolate.</div><div class="item-divider"></div></div>
+  </div>
+
+  <!-- MOJITO -->
+  <div class="cat-header">
+    <span class="cat-icon">🌿</span>
+    <h2 class="cat-title">Mojito</h2>
+    <div class="cat-line"></div>
+  </div>
+  <div class="item-grid">
+    <div class="item"><div class="item-top"><div class="item-name">Classic Virgin Mojito</div><div class="item-price">4,500 <span class="currency">RWF</span></div></div><div class="item-desc">Fresh mint leaves, lime juice, sugar, and soda water. Icy, bubbly, and ultra-refreshing.</div><div class="item-divider"></div></div>
+    <div class="item"><div class="item-top"><div class="item-name">Passion Mojito</div><div class="item-price">5,500 <span class="currency">RWF</span></div></div><div class="item-desc">Passion fruit juice with mint, lime, and soda. Sweet, tangy, and tropical.</div><div class="item-divider"></div></div>
+    <div class="item"><div class="item-top"><div class="item-name">Strawberry Mojito</div><div class="item-price">6,000 <span class="currency">RWF</span></div></div><div class="item-desc">Muddled strawberries, mint, lime, and a splash of soda. Fruity and fun.</div><div class="item-divider"></div></div>
+    <div class="item"><div class="item-top"><div class="item-name">Pineapple Mojito</div><div class="item-price">5,000 <span class="currency">RWF</span></div></div><div class="item-desc">Crushed pineapple with lime and mint, topped with soda water and ice. Juicy and exotic.</div><div class="item-divider"></div></div>
+    <div class="item"><div class="item-top"><div class="item-name">Ginger Mojito</div><div class="item-price">5,000 <span class="currency">RWF</span></div></div><div class="item-desc">Ginger blended with mint and lime, topped with soda. A spicy, fresh twist.</div><div class="item-divider"></div></div>
+    <div class="item"><div class="item-top"><div class="item-name">Cucumber Mojito</div><div class="item-price">5,000 <span class="currency">RWF</span></div></div><div class="item-desc">Fresh cucumber, lime, mint, and a splash of soda. Cooling and light.</div><div class="item-divider"></div></div>
+    <div class="item"><div class="item-top"><div class="item-name">Blue Lagoon Mojito</div><div class="item-price">6,500 <span class="currency">RWF</span></div></div><div class="item-desc">A mix of mint, lime, blue curaçao syrup, and soda water, served over ice. Refreshing and eye-catching.</div><div class="item-divider"></div></div>
+  </div>
+
+  <!-- DETOX DRINKS -->
+  <div class="cat-header">
+    <span class="cat-icon">💚</span>
+    <h2 class="cat-title">Detox Drinks</h2>
+    <div class="cat-line"></div>
+  </div>
+  <div class="item-grid">
+    <div class="item"><div class="item-top"><div class="item-name">Cucumber Mint Cooler</div><div class="item-price">5,000 <span class="currency">RWF</span></div></div><div class="item-desc">Cucumber, mint, and lemon blended with water and a touch of honey. Hydrating and soothing.</div><div class="item-divider"></div></div>
+    <div class="item"><div class="item-top"><div class="item-name">Lemon Ginger Detox</div><div class="item-price">5,000 <span class="currency">RWF</span></div></div><div class="item-desc">Fresh lemon juice, ginger, honey, and warm or cold water. Boosts digestion and immunity.</div><div class="item-divider"></div></div>
+    <div class="item"><div class="item-top"><div class="item-name">Green Power Detox</div><div class="item-price">6,000 <span class="currency">RWF</span></div></div><div class="item-desc">Spinach, apple, lime, ginger, and honey. Loaded with nutrients and antioxidants.</div><div class="item-divider"></div></div>
+    <div class="item"><div class="item-top"><div class="item-name">Carrot Cleanser</div><div class="item-price">6,000 <span class="currency">RWF</span></div></div><div class="item-desc">Carrot, apple, and ginger. Bright, fresh, and vitamin-rich.</div><div class="item-divider"></div></div>
+  </div>
+
+  <!-- OTHER DRINKS -->
+  <div class="cat-header">
+    <span class="cat-icon">💧</span>
+    <h2 class="cat-title">Other Drinks</h2>
+    <div class="cat-line"></div>
+  </div>
+  <div class="item-grid">
+    <div class="item"><div class="item-top"><div class="item-name">Mineral Water</div><div class="item-price">1,000 <span class="currency">(500ml) / 1,500 (1L) RWF</span></div></div><div class="item-divider"></div></div>
+    <div class="item"><div class="item-top"><div class="item-name">Soda</div><div class="item-price">1,000 <span class="currency">(300ml) / 1,500 (500ml) RWF</span></div></div><div class="item-divider"></div></div>
+  </div>
+
+</section>
+
+<!-- ═══════════════ BREAKFAST ═══════════════ -->
+<section id="breakfast" class="menu-section">
+  <div class="cat-header">
+    <span class="cat-icon">🍳</span>
+    <h2 class="cat-title">Breakfast</h2>
+    <div class="cat-line"></div>
+  </div>
+  <div class="item-grid">
+    <div class="item"><div class="item-top"><div class="item-name">French Breakfast</div><div class="item-price">8,000 <span class="currency">RWF</span></div></div><div class="item-desc">Butter croissant, grilled tomatoes, merguez sausage, eggs, avocado, greens, and a fruit salad.</div><div class="item-divider"></div></div>
+    <div class="item"><div class="item-top"><div class="item-name">English Breakfast</div><div class="item-price">7,000 <span class="currency">RWF</span></div></div><div class="item-desc">Eggs, sausage, grilled tomato, mushrooms, toast, and a chosen juice.</div><div class="item-divider"></div></div>
+    <div class="item"><div class="item-top"><div class="item-name">American Breakfast</div><div class="item-price">8,500 <span class="currency">RWF</span></div></div><div class="item-desc">Pancakes, scrambled eggs, sausage, grilled tomatoes, potatoes, avocado, and a chosen juice.</div><div class="item-divider"></div></div>
+    <div class="item"><div class="item-top"><div class="item-name">Rwandan Breakfast</div><div class="item-price">6,500 <span class="currency">RWF</span></div></div><div class="item-desc">Sweet potatoes, capati, beans, avocado, and a choice of Inshyushyu or Ikivuguto milk.</div><div class="item-divider"></div></div>
+    <div class="item"><div class="item-top"><div class="item-name">Avocado Toast</div><div class="item-price">5,000 <span class="currency">RWF</span></div></div><div class="item-desc">Smashed avocado on toasted bread with omelette and herbs.</div><div class="item-divider"></div></div>
+    <div class="item"><div class="item-top"><div class="item-name">Mushroom Toast</div><div class="item-price">5,500 <span class="currency">RWF</span></div></div><div class="item-desc">Creamy sautéed mushrooms over toasted bread with avocado and pesto sauce.</div><div class="item-divider"></div></div>
+    <div class="item"><div class="item-top"><div class="item-name">Ham &amp; Cheese Croissant</div><div class="item-price">5,000 <span class="currency">RWF</span></div></div><div class="item-desc">Flaky croissant filled with beef mortadella and melted cheese.</div><div class="item-divider"></div></div>
+    <div class="item"><div class="item-top"><div class="item-name">Scrambled Egg Croissant</div><div class="item-price">4,500 <span class="currency">RWF</span></div></div><div class="item-desc">Buttery croissant filled with fluffy scrambled eggs and herbs.</div><div class="item-divider"></div></div>
+    <div class="item"><div class="item-top"><div class="item-name">Avocado &amp; Egg Croissant</div><div class="item-price">5,500 <span class="currency">RWF</span></div></div><div class="item-desc">Croissant with avocado and soft-cooked egg.</div><div class="item-divider"></div></div>
+    <div class="item"><div class="item-top"><div class="item-name">Plain Omelette</div><div class="item-price">2,000 <span class="currency">RWF</span></div></div><div class="item-desc">Classic omelette with herbs.</div><div class="item-divider"></div></div>
+    <div class="item"><div class="item-top"><div class="item-name">Spanish Omelette</div><div class="item-price">3,000 <span class="currency">RWF</span></div></div><div class="item-desc">Potato and onion omelette cooked with bell peppers.</div><div class="item-divider"></div></div>
+    <div class="item"><div class="item-top"><div class="item-name">Special Omelette (With Meat)</div><div class="item-price">3,500 <span class="currency">RWF</span></div></div><div class="item-desc">Omelette with beef, vegetables, and, or with cheese inside.</div><div class="item-divider"></div></div>
+    <div class="item"><div class="item-top"><div class="item-name">Scrambled Egg</div><div class="item-price">2,000 <span class="currency">RWF</span></div></div><div class="item-desc">Light and fluffy scrambled eggs.</div><div class="item-divider"></div></div>
+    <div class="item"><div class="item-top"><div class="item-name">Poached Egg</div><div class="item-price">2,500 <span class="currency">RWF</span></div></div><div class="item-desc">Gently poached egg.</div><div class="item-divider"></div></div>
+  </div>
+
+  <!-- SALADS -->
+  <div class="cat-header">
+    <span class="cat-icon">🥗</span>
+    <h2 class="cat-title">Salads</h2>
+    <div class="cat-line"></div>
+  </div>
+  <div class="item-grid">
+    <div class="item"><div class="item-top"><div class="item-name">Chicken Caesar Salad</div><div class="item-price">8,500 <span class="currency">RWF</span></div></div><div class="item-desc">Grilled chicken, fresh salad leaves and herbs, tomatoes, cucumber, Caesar dressing, cheese, and croutons.</div><div class="item-divider"></div></div>
+    <div class="item"><div class="item-top"><div class="item-name">Tilapia Water Salad</div><div class="item-price">8,500 <span class="currency">RWF</span></div></div><div class="item-desc">Flaked tilapia, fresh salad leaves and herbs, cucumber, tomato, radish, onion, peanuts, bell peppers, and vinaigrette.</div><div class="item-divider"></div></div>
+    <div class="item"><div class="item-top"><div class="item-name">Beef Teriyaki Salad</div><div class="item-price">9,000 <span class="currency">RWF</span></div></div><div class="item-desc">Beef strips, carrots, avocado, cucumber, onion, tomatoes, and penne in a teriyaki-ginger glaze over salad leaves and herbs with sesame.</div><div class="item-divider"></div></div>
+    <div class="item"><div class="item-top"><div class="item-name">Sweet Corn Salad</div><div class="item-price">7,500 <span class="currency">RWF</span></div></div><div class="item-desc">Sweet corn, tomatoes, cucumber, onion, carrots, avocado, herbs, bell peppers, cheese, onion, and vinaigrette.</div><div class="item-divider"></div></div>
+  </div>
+
+  <!-- SOUPS -->
+  <div class="cat-header">
+    <span class="cat-icon">🍲</span>
+    <h2 class="cat-title">Soups</h2>
+    <div class="cat-line"></div>
+  </div>
+  <div class="item-grid">
+    <div class="item"><div class="item-top"><div class="item-name">Creamy Mushroom Soup</div><div class="item-price">7,000 <span class="currency">RWF</span></div></div><div class="item-desc">Smooth, creamy soup with mushrooms, garlic, and herbs.</div><div class="item-divider"></div></div>
+    <div class="item"><div class="item-top"><div class="item-name">Green Vegetable Soup</div><div class="item-price">6,000 <span class="currency">RWF</span></div></div><div class="item-desc">Light blend of spinach, zucchini, broccoli, garlic, and herbs.</div><div class="item-divider"></div></div>
+    <div class="item"><div class="item-top"><div class="item-name">Fish Soup</div><div class="item-price">7,000 <span class="currency">RWF</span></div></div><div class="item-desc">Flaky fish in tomato broth with carrots, local herbs, and garlic.</div><div class="item-divider"></div></div>
+    <div class="item"><div class="item-top"><div class="item-name">Pumpkin Soup</div><div class="item-price">6,500 <span class="currency">RWF</span></div></div><div class="item-desc">Creamy pumpkin soup with a hint of ginger and peanut.</div><div class="item-divider"></div></div>
+  </div>
+</section>
+
+<!-- ═══════════════ MAINS ═══════════════ -->
+<section id="mains" class="menu-section">
+
+  <div class="cat-header">
+    <span class="cat-icon">🍽</span>
+    <h2 class="cat-title">Main Courses</h2>
+    <div class="cat-line"></div>
+  </div>
+  <div class="side-note">All main courses are served with your choice of sides: chips, mashed potatoes, pan-fried potatoes, steamed potatoes; banana fries or imizuzu (+1,000 RWF extra); steamed rice, kawunga, ugali; green vegetables; steamed vegetables; salad; creamy mushroom sauce, sauce provençale, peanut butter sauce, or lemon butter sauce.</div>
+  <div class="item-grid">
+    <div class="item"><div class="item-top"><div class="item-name">Pan-Fried Beef Steak</div><div class="item-price">11,500 <span class="currency">RWF</span></div></div><div class="item-desc">Tender steak, pan-seared with garlic and herbs.</div><div class="item-divider"></div></div>
+    <div class="item"><div class="item-top"><div class="item-name">Pan-Fried Beef Roast</div><div class="item-price">7,500 <span class="currency">RWF</span></div></div><div class="item-desc">Slow-roasted beef finished in a hot pan with spices and bell peppers.</div><div class="item-divider"></div></div>
+    <div class="item"><div class="item-top"><div class="item-name">Pan-Fried Chicken Breast</div><div class="item-price">8,500 <span class="currency">RWF</span></div></div><div class="item-desc">Juicy chicken breast seared golden.</div><div class="item-divider"></div></div>
+    <div class="item"><div class="item-top"><div class="item-name">Pan-Fried Chicken Leg</div><div class="item-price">8,000 <span class="currency">RWF</span></div></div><div class="item-desc">Chicken leg quarter seared golden.</div><div class="item-divider"></div></div>
+    <div class="item"><div class="item-top"><div class="item-name">Pan-Fried Chicken Wings</div><div class="item-price">6,500 <span class="currency">RWF</span></div></div><div class="item-desc">A flavourful serving of chicken wings, lightly seasoned.</div><div class="item-divider"></div></div>
+    <div class="item"><div class="item-top"><div class="item-name">Stir-Fried Chicken</div><div class="item-price">8,500 <span class="currency">RWF</span></div></div><div class="item-desc">Sliced chicken stir-fried with bell peppers and light soy sauce.</div><div class="item-divider"></div></div>
+    <div class="item"><div class="item-top"><div class="item-name">Pan-Fried Tilapia Fillet</div><div class="item-price">15,000 <span class="currency">RWF</span></div></div><div class="item-desc">Golden tilapia fillet, served with lemon butter sauce.</div><div class="item-divider"></div></div>
+    <div class="item"><div class="item-top"><div class="item-name">Whole Baked Tilapia</div><div class="item-price">8,000 <span class="currency">RWF</span></div></div><div class="item-desc">Herb-marinated tilapia baked whole.</div><div class="item-divider"></div></div>
+    <div class="item"><div class="item-top"><div class="item-name">Fried Sambaza</div><div class="item-price">7,500 <span class="currency">RWF</span></div></div><div class="item-desc">Crispy fried sambaza served with lemon and kachumbari.</div><div class="item-divider"></div></div>
+    <div class="item"><div class="item-top"><div class="item-name">Stewed Sambaza</div><div class="item-price">7,500 <span class="currency">RWF</span></div></div><div class="item-desc">Sambaza cooked in a rich tomato-onion sauce.</div><div class="item-divider"></div></div>
+  </div>
+
+  <!-- FRIED RICE -->
+  <div class="cat-header">
+    <span class="cat-icon">🍚</span>
+    <h2 class="cat-title">Fried Rice Dishes</h2>
+    <div class="cat-line"></div>
+  </div>
+  <div class="sub-header">Serves 3 to 4</div>
+  <div class="item-grid">
+    <div class="item"><div class="item-top"><div class="item-name">Chicken Rainbow Rice</div><div class="item-price">25,000 <span class="currency">RWF</span></div></div><div class="item-desc">Fried rice with colourful veggies, sweet corn, and marinated chicken strips, served with salad.</div><div class="item-divider"></div></div>
+    <div class="item"><div class="item-top"><div class="item-name">Beef Rainbow Rice</div><div class="item-price">25,000 <span class="currency">RWF</span></div></div><div class="item-desc">Stir-fried rice with seasoned beef, colourful veggies, sweet corn, and herbs, served with salad.</div><div class="item-divider"></div></div>
+    <div class="item"><div class="item-top"><div class="item-name">Fish Rainbow Rice</div><div class="item-price">27,000 <span class="currency">RWF</span></div></div><div class="item-desc">Fried rice with fish pieces, vegetables, and mild spices.</div><div class="item-divider"></div></div>
+    <div class="item"><div class="item-top"><div class="item-name">Ikafé Rainbow Rice</div><div class="item-price">28,000 <span class="currency">RWF</span></div></div><div class="item-desc">A rich mix of chicken, beef, fish, and vegetables in seasoned rice.</div><div class="item-divider"></div></div>
+    <div class="item"><div class="item-top"><div class="item-name">Vegetable Rainbow Rice</div><div class="item-price">20,000 <span class="currency">RWF</span></div></div><div class="item-desc">Vibrant fried rice with seasonal vegetables.</div><div class="item-divider"></div></div>
+  </div>
+</section>
+
+<!-- ═══════════════ PASTA & WRAPS ═══════════════ -->
+<section id="pasta-wraps" class="menu-section">
+
+  <!-- PASTA -->
+  <div class="cat-header">
+    <span class="cat-icon">🍝</span>
+    <h2 class="cat-title">Pasta Dishes</h2>
+    <div class="cat-line"></div>
+  </div>
+  <div class="item-grid">
+    <div class="item"><div class="item-top"><div class="item-name">Spaghetti Bolognese</div><div class="item-price">6,500 <span class="currency">RWF</span></div></div><div class="item-desc">Classic Italian-style meat sauce over al dente spaghetti.</div><div class="item-divider"></div></div>
+    <div class="item"><div class="item-top"><div class="item-name">Creamy Chicken Pasta</div><div class="item-price">8,000 <span class="currency">RWF</span></div></div><div class="item-desc">Penne pasta in a rich, creamy sauce with tender chicken strips.</div><div class="item-divider"></div></div>
+    <div class="item"><div class="item-top"><div class="item-name">Spaghetti Arrabbiata</div><div class="item-price">6,000 <span class="currency">RWF</span></div></div><div class="item-desc">Spicy tomato sauce with garlic and herbs over spaghetti.</div><div class="item-divider"></div></div>
+    <div class="item"><div class="item-top"><div class="item-name">Spaghetti Napolitaine</div><div class="item-price">8,000 <span class="currency">RWF</span></div></div><div class="item-desc">Tomato-based sauce with basil and a hint of garlic. Simple and satisfying.</div><div class="item-divider"></div></div>
+    <div class="item"><div class="item-top"><div class="item-name">Creamy Mushroom Pasta</div><div class="item-price">7,000 <span class="currency">RWF</span></div></div><div class="item-desc">Bowtie pasta in a creamy mushroom and herb sauce.</div><div class="item-divider"></div></div>
+  </div>
+
+  <!-- WRAPS -->
+  <div class="cat-header">
+    <span class="cat-icon">🌯</span>
+    <h2 class="cat-title">Wraps</h2>
+    <div class="cat-line"></div>
+  </div>
+  <div class="sub-header">Served with Chips</div>
+  <div class="item-grid">
+    <div class="item"><div class="item-top"><div class="item-name">Chicken Wrap</div><div class="item-price">8,000 <span class="currency">RWF</span></div></div><div class="item-desc">Grilled chicken, lettuce, tomato, and Haven House Sauce wrapped in a warm tortilla.</div><div class="item-divider"></div></div>
+    <div class="item"><div class="item-top"><div class="item-name">Beef Wrap</div><div class="item-price">7,500 <span class="currency">RWF</span></div></div><div class="item-desc">Sliced beef, onions, greens, and Haven House Sauce wrapped in a warm tortilla.</div><div class="item-divider"></div></div>
+    <div class="item"><div class="item-top"><div class="item-name">Vegetable Wrap</div><div class="item-price">6,000 <span class="currency">RWF</span></div></div><div class="item-desc">Grilled vegetables, Haven House Sauce, and avocado wrapped in a warm tortilla.</div><div class="item-divider"></div></div>
+    <div class="item"><div class="item-top"><div class="item-name">Crispy Fish Wrap</div><div class="item-price">8,500 <span class="currency">RWF</span></div></div><div class="item-desc">Golden fish fillet, lettuce, and Haven House Sauce wrapped up.</div><div class="item-divider"></div></div>
+  </div>
+
+  <!-- SANDWICHES -->
+  <div class="cat-header">
+    <span class="cat-icon">🥪</span>
+    <h2 class="cat-title">Sandwiches</h2>
+    <div class="cat-line"></div>
+  </div>
+  <div class="sub-header">Served with Chips</div>
+  <div class="item-grid">
+    <div class="item"><div class="item-top"><div class="item-name">Classic Haven Burger</div><div class="item-price">7,500 <span class="currency">RWF</span></div></div><div class="item-desc">A juicy grilled beef patty with melted cheese, lettuce, tomato, pickles, and Ikafé's special sauce, all nested in a toasted bun.</div><div class="item-divider"></div></div>
+    <div class="item"><div class="item-top"><div class="item-name">Double Haven Burger</div><div class="item-price">10,000 <span class="currency">RWF</span></div></div><div class="item-desc">Two juicy beef patties grilled to perfection and layered with melted cheddar cheese. A hearty, flavourful burger built for serious appetites.</div><div class="item-divider"></div></div>
+    <div class="item"><div class="item-top"><div class="item-name">Beef Sandwich</div><div class="item-price">7,500 <span class="currency">RWF</span></div></div><div class="item-desc">Tender beef slices, caramelised onions, and house sauce in a mini baguette.</div><div class="item-divider"></div></div>
+    <div class="item"><div class="item-top"><div class="item-name">Chicken Sandwich</div><div class="item-price">8,000 <span class="currency">RWF</span></div></div><div class="item-desc">Grilled chicken, lettuce, tomato, and sauce in a mini baguette.</div><div class="item-divider"></div></div>
+    <div class="item"><div class="item-top"><div class="item-name">Crispy Fish Sandwich</div><div class="item-price">8,500 <span class="currency">RWF</span></div></div><div class="item-desc">Golden fish fillet with house sauce and fresh greens in a mini baguette.</div><div class="item-divider"></div></div>
+    <div class="item"><div class="item-top"><div class="item-name">Grilled Vegetable Sandwich</div><div class="item-price">6,000 <span class="currency">RWF</span></div></div><div class="item-desc">Mixed grilled vegetables, house sauce, and cheese in a mini baguette.</div><div class="item-divider"></div></div>
+    <div class="item"><div class="item-top"><div class="item-name">Ikafé Club Sandwich</div><div class="item-price">10,500 <span class="currency">RWF</span></div></div><div class="item-desc">Triple-layer sandwich with chicken, egg, lettuce, tomato, and mayo.</div><div class="item-divider"></div></div>
+    <div class="item"><div class="item-top"><div class="item-name">Tramezzini Sandwich</div><div class="item-price">9,500 <span class="currency">RWF</span></div></div><div class="item-desc">Italian-style soft sandwich with beef mortadella, avocado, cheese, and house sauce.</div><div class="item-divider"></div></div>
+  </div>
+</section>
+
+<!-- ═══════════════ DESSERTS ═══════════════ -->
+<section id="desserts" class="menu-section">
+  <div class="cat-header">
+    <span class="cat-icon">🍰</span>
+    <h2 class="cat-title">Desserts</h2>
+    <div class="cat-line"></div>
+  </div>
+  <div class="item-grid">
+    <div class="item"><div class="item-top"><div class="item-name">Tiramisù</div><div class="item-price">8,500 <span class="currency">RWF</span></div></div><div class="item-desc">Classic Italian dessert made with coffee-soaked ladyfingers, mascarpone, and cocoa.</div><div class="item-divider"></div></div>
+    <div class="item"><div class="item-top"><div class="item-name">French Chocolate Lava Cake</div><div class="item-price">9,500 <span class="currency">RWF</span></div></div><div class="item-desc">Rich chocolate cake with a warm, gooey centre, served with a touch of cream. Topped with a scoop of ice cream.</div><div class="item-divider"></div></div>
+    <div class="item"><div class="item-top"><div class="item-name">Crêpe Suzette</div><div class="item-price">8,500 <span class="currency">RWF</span></div></div><div class="item-desc">Thin crêpes in a buttery orange-caramel sauce, topped with a scoop of ice cream.</div><div class="item-divider"></div></div>
+    <div class="item"><div class="item-top"><div class="item-name">Lemon Cake Bread Slices</div><div class="item-price">5,000 <span class="currency">RWF</span></div></div><div class="item-desc">Moist lemon loaf with vanilla anglaise sauce and banana slices on top.</div><div class="item-divider"></div></div>
+    <div class="item"><div class="item-top"><div class="item-name">Banana Cake Bread Slices</div><div class="item-price">5,000 <span class="currency">RWF</span></div></div><div class="item-desc">Sweet banana cake served with vanilla anglaise sauce and orange fruit garnish.</div><div class="item-divider"></div></div>
+    <div class="item"><div class="item-top"><div class="item-name">American Pancake</div><div class="item-price">5,500 <span class="currency">RWF</span></div></div><div class="item-desc">Fluffy pancakes served with syrup and fruit topping.</div><div class="item-divider"></div></div>
+    <div class="item"><div class="item-top"><div class="item-name">Fruit Plata</div><div class="item-price">6,500 <span class="currency">RWF</span></div></div><div class="item-desc">A beautifully arranged plate of assorted fresh seasonal fruits.</div><div class="item-divider"></div></div>
+    <div class="item"><div class="item-top"><div class="item-name">Fruit Salad</div><div class="item-price">5,000 <span class="currency">RWF</span></div></div><div class="item-desc">A refreshing mix of chopped seasonal fruits, lightly chilled.</div><div class="item-divider"></div></div>
+    <div class="item"><div class="item-top"><div class="item-name">Ice Cream (1 scoop)</div><div class="item-price">1,500 <span class="currency">RWF</span></div></div><div class="item-desc">Creamy scoops of ice cream available in a variety of classic and seasonal flavours. Choose from vanilla, chocolate, strawberry. Served with toppings like chocolate syrup, crushed nuts, cereals, or fresh fruit on request.</div><div class="item-divider"></div></div>
+  </div>
+</section>
+
+<footer>
+  <div>© Ikafé Haven — Kicuriko Sonatube Silverback Mall, Kigali, Rwanda</div>
+  <div class="footer-contact">
+    <span>📞 +250 788 558 987</span>
+  </div>
+  <div class="footer-social">
+    <a href="https://instagram.com/ikafehaven" target="_blank" class="social-icon" title="Instagram">
+      <svg width="18" height="18" viewBox="0 0 24 24" fill="currentColor">
+        <path d="M12 2.163c3.204 0 3.584.012 4.85.07 3.252.148 4.771 1.691 4.919 4.919.058 1.265.069 1.645.069 4.849 0 3.205-.012 3.584-.069 4.849-.149 3.225-1.664 4.771-4.919 4.919-1.266.058-1.644.07-4.85.07-3.204 0-3.584-.012-4.849-.07-3.26-.149-4.771-1.699-4.919-4.92-.058-1.265-.07-1.644-.07-4.849 0-3.204.013-3.583.07-4.849.149-3.227 1.664-4.771 4.919-4.919 1.266-.057 1.645-.069 4.849-.069zm0-2.163c-3.259 0-3.667.014-4.947.072-4.358.2-6.78 2.618-6.98 6.98-.059 1.281-.073 1.689-.073 4.948 0 3.259.014 3.668.072 4.948.2 4.358 2.618 6.78 6.98 6.98 1.281.058 1.689.072 4.948.072 3.259 0 3.668-.014 4.948-.072 4.354-.2 6.782-2.618 6.979-6.98.059-1.28.073-1.689.073-4.948 0-3.259-.014-3.667-.072-4.947-.196-4.354-2.617-6.78-6.979-6.98-1.281-.059-1.69-.073-4.949-.073zM5.838 12a6.162 6.162 0 1 1 12.324 0 6.162 6.162 0 0 1-12.324 0zM12 16a4 4 0 1 1 0-8 4 4 0 0 1 0 8zm4.965-10.405a1.44 1.44 0 1 1 2.881.001 1.44 1.44 0 0 1-2.881-.001z"/>
+      </svg>
+    </a>
+    <a href="https://tiktok.com/@ikafehaven" target="_blank" class="social-icon" title="TikTok">
+      <svg width="18" height="18" viewBox="0 0 24 24" fill="currentColor">
+        <path d="M12.525.02c1.31-.02 2.61-.01 3.91-.02.08 1.53.63 3.09 1.75 4.17 1.12 1.11 2.7 1.62 4.24 1.79v4.03c-1.44-.05-2.89-.35-4.2-.97-.57-.26-1.1-.59-1.62-.93-.01 2.92.01 5.84-.02 8.75-.08 1.4-.54 2.79-1.35 3.94-1.31 1.92-3.58 3.17-5.91 3.21-1.43.08-2.86-.31-4.08-1.03-2.02-1.19-3.44-3.37-3.65-5.71-.02-.5-.03-1-.01-1.49.18-1.9 1.12-3.72 2.58-4.96 1.66-1.44 3.98-2.13 6.15-1.72.02 1.48-.04 2.96-.04 4.44-.99-.32-2.15-.23-3.02.37-.63.41-1.11 1.04-1.36 1.75-.21.51-.15 1.07-.14 1.61.24 1.64 1.82 3.02 3.5 2.87 1.12-.01 2.19-.66 2.77-1.61.19-.33.4-.67.41-1.06.1-1.79.06-3.57.07-5.36.01-4.03-.01-8.05.02-12.07z"/>
+      </svg>
+    </a>
+  </div>
+  <div style="margin-top:15px;font-size:10px;opacity:0.5;">All prices in <span>Rwandan Francs (RWF)</span> · Menu subject to change</div>
+</footer>
+
+<script>
+  function showTab(id) {
+    document.querySelectorAll('.menu-section').forEach(s => s.classList.remove('active'));
+    document.querySelectorAll('.tab-btn').forEach(b => b.classList.remove('active'));
+    document.getElementById(id).classList.add('active');
+    event.currentTarget.classList.add('active');
+    window.scrollTo({ top: document.querySelector('.tab-nav').offsetTop, behavior: 'smooth' });
+  }
+</script>
+</body>
+</html>
