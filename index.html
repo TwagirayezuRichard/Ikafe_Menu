@@ -302,6 +302,8 @@
     .item-name { font-size: 16px; }
     .item-price { font-size: 14px; }
     .item-desc { font-size: 12px; }
+    .cart-floating { right: 14px; bottom: 14px; padding: 12px 16px; }
+    .cart-box { width: min(420px, 100vw); padding: 20px; }
     .footer { padding: 25px 20px; }
     .social-icon { width: 32px; height: 32px; font-size: 16px; }
   }
@@ -326,6 +328,9 @@
     .item-desc { font-size: 11px; margin-top: 4px; }
     .sub-header { font-size: 9px; letter-spacing: 3px; margin: 24px 0 12px; }
     .side-note { font-size: 11px; padding: 12px 16px; margin: 12px 0; }
+    .cart-floating { left: 12px; right: 12px; bottom: 12px; text-align: center; border-radius: 14px; }
+    .cart-box { width: 100vw; padding: 18px; }
+    .cart-header h2 { font-size: 20px; }
     .footer { padding: 20px 16px; font-size: 11px; }
     .footer-contact { font-size: 12px; }
     .social-icon { width: 30px; height: 30px; font-size: 14px; }
@@ -402,40 +407,75 @@
   box-shadow:0 5px 20px rgba(0,0,0,.3);
 }
 
+.cart-overlay {
+  position: fixed;
+  inset: 0;
+  background: rgba(44, 26, 14, 0.35);
+  opacity: 0;
+  pointer-events: none;
+  transition: opacity 0.3s ease;
+  z-index: 998;
+}
+
+.cart-overlay.active {
+  opacity: 1;
+  pointer-events: auto;
+}
 
 .cart-box {
   position:fixed;
-  right:-400px;
+  right:-420px;
   top:0;
-  width:350px;
+  width:min(350px, 100vw);
   height:100%;
   background:white;
   z-index:1000;
   padding:25px;
   transition:.4s;
   overflow:auto;
+  box-shadow:-8px 0 20px rgba(0,0,0,0.12);
 }
-
 
 .cart-box.active {
   right:0;
 }
 
-
-.cart-item {
+.cart-header {
   display:flex;
+  align-items:center;
   justify-content:space-between;
-  margin:15px 0;
+  gap:12px;
+  margin-bottom:18px;
 }
 
+.close-cart-btn {
+  border:none;
+  background: var(--cream);
+  color: var(--brown);
+  width:38px;
+  height:38px;
+  border-radius:50%;
+  cursor:pointer;
+  font-size:22px;
+  line-height:1;
+}
+
+.close-cart-btn:hover {
+  background: #e8dcc6;
+}
+
+.qty {
+  display:flex;
+  align-items:center;
+  gap:8px;
+}
 
 .qty button {
- background:#ddd;
- border:none;
- padding:5px 10px;
- cursor:pointer;
+  background:#ddd;
+  border:none;
+  padding:5px 10px;
+  cursor:pointer;
 }
-
 
 .order-btn {
  width:100%;
@@ -452,9 +492,11 @@
 <body>
 <!-- add to cart-->
 
+<div class="cart-overlay" id="cartOverlay" onclick="closeCart()"></div>
+
 <!-- CART BUTTON -->
 
-<div class="cart-floating" onclick="openCart()">
+<div class="cart-floating" id="cartFloating" onclick="openCart()">
   🛒 Cart (<span id="cartCount">0</span>)
   </div>
   
@@ -464,7 +506,10 @@
   
   <div class="cart-box" id="cartBox">
   
-  <h2>Your Order</h2>
+  <div class="cart-header">
+    <h2>Your Order</h2>
+    <button class="close-cart-btn" onclick="closeCart()" aria-label="Close cart">×</button>
+  </div>
   
   <div id="cartItems"></div>
   
@@ -1048,9 +1093,33 @@ function openCart(){
 
 document
 .getElementById("cartBox")
-.classList.toggle("active");
+.classList.add("active");
+
+document
+.getElementById("cartOverlay")
+.classList.add("active");
 
 }
+
+
+function closeCart(){
+
+document
+.getElementById("cartBox")
+.classList.remove("active");
+
+document
+.getElementById("cartOverlay")
+.classList.remove("active");
+
+}
+
+
+document.addEventListener("keydown", function(event){
+  if(event.key === "Escape") {
+    closeCart();
+  }
+});
 
 
 
