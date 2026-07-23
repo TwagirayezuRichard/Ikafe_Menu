@@ -29,15 +29,17 @@
     min-height: 100vh;
   }
 
-  /* ——— HERO ——— */
-  .hero {
+  /* ——— HERO GRID CONTAINER ——— */
+  .hero-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
     background: var(--espresso);
     position: relative;
-    text-align: center;
-    padding: 70px 24px 60px;
     overflow: hidden;
+    border-bottom: 2px solid var(--gold);
   }
-  .hero::before {
+
+  .hero-grid::before {
     content: '';
     position: absolute; inset: 0;
     background: repeating-linear-gradient(
@@ -47,6 +49,14 @@
       rgba(255,255,255,0.02) 30px,
       rgba(255,255,255,0.02) 31px
     );
+  }
+
+  /* ——— HERO ——— */
+  .hero {
+    text-align: center;
+    padding: 50px 30px;
+    position: relative;
+    z-index: 1;
   }
   .hero-badge {
     display: inline-block;
@@ -90,6 +100,7 @@
     margin: 28px auto 0;
   }
 
+  
   /* ——— NAV TABS ——— */
   .tab-nav {
     position: sticky;
@@ -280,22 +291,32 @@
   }
 
   /* ——— RESPONSIVE DESIGN ——— */
-  
+
   /* Large Tablets and Small Laptops */
   @media (max-width: 1024px) {
-    .hero { padding: 60px 20px 50px; }
+    .hero-grid { grid-template-columns: 1fr; }
+    .hero { padding: 40px 20px; border-bottom: 1px solid rgba(184,144,58,0.3); }
+    .loyalty-banner { padding: 40px 20px; border-left: none; border-top: 1px solid rgba(184,144,58,0.3); }
     .hero h1 { font-size: clamp(42px, 8vw, 75px); }
+    .loyalty-banner h3 { font-size: 20px; }
+    .loyalty-banner p { font-size: 13px; }
+    .loyalty-btn { padding: 10px 24px; font-size: 12px; }
     .item-grid { grid-template-columns: repeat(auto-fill, minmax(280px, 1fr)); }
   }
-  
+
   /* Tablets */
   @media (max-width: 768px) {
-    .hero { padding: 50px 20px 40px; }
+    .hero { padding: 35px 20px 30px; }
+    .loyalty-banner { padding: 35px 20px 30px; }
     .hero h1 { font-size: clamp(36px, 7vw, 65px); }
-    .hero-badge { font-size: 10px; letter-spacing: 3px; }
-    .hero-sub { font-size: 11px; letter-spacing: 3px; }
-    .hero-hours { font-size: 10px; letter-spacing: 1px; }
-    .tab-btn { padding: 16px 14px; font-size: 10px; letter-spacing: 2px; }
+    .hero-badge { font-size: 10px; letter-spacing: 3px; padding: 5px 16px; margin-bottom: 20px; }
+    .hero-sub { font-size: 11px; letter-spacing: 3px; margin-top: 12px; }
+    .hero-hours { font-size: 10px; letter-spacing: 1px; margin-top: 10px; }
+    .hero-line { margin: 20px auto 0; }
+    .loyalty-banner h3 { font-size: 18px; margin-bottom: 10px; }
+    .loyalty-banner p { font-size: 12px; margin-bottom: 16px; }
+    .loyalty-btn { padding: 10px 20px; font-size: 11px; }
+    .tab-btn { padding: 14px 12px; font-size: 10px; letter-spacing: 2px; }
     .item-grid { grid-template-columns: repeat(auto-fill, minmax(250px, 1fr)); gap: 1px; }
     .cat-title { font-size: 24px; }
     .item { padding: 16px 18px; }
@@ -307,26 +328,30 @@
     .footer { padding: 25px 20px; }
     .social-icon { width: 32px; height: 32px; font-size: 16px; }
   }
-  
+
   /* Large Smartphones */
   @media (max-width: 600px) {
-    .hero { padding: 40px 16px 35px; }
+    .hero { padding: 30px 16px 25px; }
+    .loyalty-banner { padding: 30px 16px 25px; }
     .hero h1 { font-size: clamp(32px, 6vw, 55px); }
-    .hero-badge { font-size: 9px; letter-spacing: 2px; margin-bottom: 20px; }
-    .hero-sub { font-size: 10px; letter-spacing: 2px; margin-top: 12px; }
-    .hero-hours { font-size: 9px; letter-spacing: 1px; margin-top: 10px; }
-    .hero-line { margin: 20px auto 0; width: 50px; }
-    .tab-btn { padding: 14px 10px; font-size: 9px; letter-spacing: 1.5px; }
-    .menu-section { padding: 40px 16px 60px; }
-    .cat-header { margin: 40px 0 20px; gap: 15px; }
-    .cat-title { font-size: 22px; }
-    .cat-icon { font-size: 18px; }
+    .hero-badge { font-size: 9px; letter-spacing: 2px; padding: 4px 14px; margin-bottom: 16px; }
+    .hero-sub { font-size: 10px; letter-spacing: 2px; margin-top: 10px; }
+    .hero-hours { font-size: 9px; letter-spacing: 1px; margin-top: 8px; }
+    .hero-line { margin: 16px auto 0; width: 40px; }
+    .loyalty-banner h3 { font-size: 16px; margin-bottom: 8px; }
+    .loyalty-banner p { font-size: 11px; margin-bottom: 14px; }
+    .loyalty-btn { padding: 8px 18px; font-size: 10px; letter-spacing: 1.5px; }
+    .tab-btn { padding: 12px 8px; font-size: 9px; letter-spacing: 1.5px; }
+    .menu-section { padding: 35px 16px 50px; }
+    .cat-header { margin: 35px 0 18px; gap: 12px; }
+    .cat-title { font-size: 20px; }
+    .cat-icon { font-size: 16px; }
     .item-grid { grid-template-columns: 1fr; }
     .item { padding: 14px 16px; }
     .item-name { font-size: 15px; }
     .item-price { font-size: 13px; }
     .item-desc { font-size: 11px; margin-top: 4px; }
-    .sub-header { font-size: 9px; letter-spacing: 3px; margin: 24px 0 12px; }
+    .sub-header { font-size: 9px; letter-spacing: 3px; margin: 20px 0 10px; }
     .side-note { font-size: 11px; padding: 12px 16px; margin: 12px 0; }
     .cart-floating { left: 12px; right: 12px; bottom: 12px; text-align: center; border-radius: 14px; }
     .cart-box { width: 100vw; padding: 18px; }
@@ -336,40 +361,55 @@
     .social-icon { width: 30px; height: 30px; font-size: 14px; }
     .footer-social { gap: 15px; }
   }
-  
+
   /* Small Smartphones */
   @media (max-width: 400px) {
-    .hero { padding: 30px 12px 25px; }
+    .hero { padding: 25px 12px 20px; }
+    .loyalty-banner { padding: 25px 12px 20px; }
     .hero h1 { font-size: clamp(28px, 5vw, 45px); }
-    .hero-badge { font-size: 8px; letter-spacing: 1.5px; margin-bottom: 15px; }
-    .hero-sub { font-size: 9px; letter-spacing: 1.5px; margin-top: 10px; }
-    .hero-hours { font-size: 8px; letter-spacing: 0.5px; margin-top: 8px; }
-    .hero-line { margin: 15px auto 0; width: 40px; }
-    .tab-btn { padding: 12px 8px; font-size: 8px; letter-spacing: 1px; }
-    .menu-section { padding: 30px 12px 50px; }
-    .cat-header { margin: 30px 0 15px; gap: 12px; }
-    .cat-title { font-size: 20px; }
-    .cat-icon { font-size: 16px; }
+    .hero-badge { font-size: 8px; letter-spacing: 1.5px; padding: 4px 12px; margin-bottom: 14px; }
+    .hero-sub { font-size: 9px; letter-spacing: 1.5px; margin-top: 8px; }
+    .hero-hours { font-size: 8px; letter-spacing: 0.5px; margin-top: 6px; }
+    .hero-line { margin: 12px auto 0; width: 35px; }
+    .loyalty-banner h3 { font-size: 14px; margin-bottom: 6px; }
+    .loyalty-banner p { font-size: 10px; margin-bottom: 12px; }
+    .loyalty-btn { padding: 7px 16px; font-size: 9px; letter-spacing: 1px; }
+    .tab-btn { padding: 10px 6px; font-size: 8px; letter-spacing: 1px; }
+    .menu-section { padding: 25px 12px 40px; }
+    .cat-header { margin: 25px 0 12px; gap: 10px; }
+    .cat-title { font-size: 18px; }
+    .cat-icon { font-size: 14px; }
     .item { padding: 12px 14px; }
     .item-name { font-size: 14px; }
     .item-price { font-size: 12px; }
     .item-desc { font-size: 10px; }
-    .sub-header { font-size: 8px; letter-spacing: 2px; margin: 20px 0 10px; }
+    .sub-header { font-size: 8px; letter-spacing: 2px; margin: 16px 0 8px; }
     .side-note { font-size: 10px; padding: 10px 14px; margin: 10px 0; }
     .footer { padding: 15px 12px; font-size: 10px; }
     .footer-contact { font-size: 11px; }
     .social-icon { width: 28px; height: 28px; font-size: 12px; }
     .footer-social { gap: 12px; }
   }
-  
+
   /* Landscape orientation adjustments */
   @media (max-height: 600px) and (orientation: landscape) {
-    .hero { padding: 30px 20px 25px; }
+    .hero-grid { grid-template-columns: 1fr 1fr; }
+    .hero { padding: 20px 20px 15px; }
+    .loyalty-banner { padding: 20px 20px 15px; }
     .hero h1 { font-size: clamp(24px, 4vw, 40px); }
-    .hero-badge { margin-bottom: 15px; }
-    .hero-sub { margin-top: 8px; }
-    .hero-hours { margin-top: 6px; }
-    .hero-line { margin: 15px auto 0; }
+    .hero-badge { margin-bottom: 10px; }
+    .hero-sub { margin-top: 6px; }
+    .hero-hours { margin-top: 4px; }
+    .hero-line { margin: 10px auto 0; }
+    .loyalty-banner h3 { font-size: 16px; margin-bottom: 6px; }
+    .loyalty-banner p { font-size: 11px; margin-bottom: 10px; }
+    .loyalty-btn { padding: 8px 16px; font-size: 10px; }
+  }
+
+  /* Extra large screens */
+  @media (min-width: 1400px) {
+    .menu-section { max-width: 1200px; }
+    .item-grid { grid-template-columns: repeat(auto-fill, minmax(350px, 1fr)); }
   }
 
 
@@ -487,6 +527,55 @@
  cursor:pointer;
  font-size:16px;
 }
+
+/* LOYALTY BANNER */
+.loyalty-banner {
+  padding: 50px 30px;
+  text-align: center;
+  position: relative;
+  z-index: 1;
+  border-left: 1px solid rgba(184,144,58,0.3);
+}
+
+.loyalty-banner h3 {
+  font-family: 'Cormorant Garamond', serif;
+  font-size: 24px;
+  font-weight: 600;
+  color: var(--gold-light);
+  margin-bottom: 12px;
+  letter-spacing: 0.5px;
+}
+
+.loyalty-banner p {
+  font-size: 14px;
+  color: var(--cream);
+  margin-bottom: 20px;
+  line-height: 1.6;
+  opacity: 0.9;
+}
+
+.loyalty-btn {
+  display: inline-block;
+  background: var(--gold);
+  color: var(--espresso);
+  text-decoration: none;
+  padding: 12px 32px;
+  border-radius: 50px;
+  font-family: 'Jost', sans-serif;
+  font-size: 13px;
+  font-weight: 500;
+  letter-spacing: 2px;
+  text-transform: uppercase;
+  transition: all 0.3s ease;
+  border: 2px solid var(--gold);
+}
+
+.loyalty-btn:hover {
+  background: var(--gold-light);
+  color: var(--espresso);
+  transform: translateY(-2px);
+  box-shadow: 0 4px 15px rgba(184,144,58,0.4);
+}
 </style>
 </head>
 <body>
@@ -526,13 +615,32 @@
   
   
   </div>
-<!-- HERO -->
-<div class="hero">
-  <div class="hero-badge">Kigali, Rwanda</div>
-  <h1>Ikafé <span>Haven</span></h1>
-  <div class="hero-sub">Food &amp; Drinks Menu</div>
-  <div class="hero-hours">🕐 Open Monday to Sunday 24/7</div>
-  <div class="hero-line"></div>
+<!-- HERO GRID -->
+<div class="hero-grid">
+  <!-- HERO -->
+  <div class="hero">
+    <div class="hero-badge">Kigali, Rwanda</div>
+    <h1>Ikafé <span>Haven</span></h1>
+    <div class="hero-sub">Food &amp; Drinks Menu</div>
+    <div class="hero-hours">🕐 Open Monday to Sunday 24/7</div>
+    <div class="hero-line"></div>
+  </div>
+
+  <!-- LOYALTY PROGRAM -->
+  <div class="loyalty-banner">
+    <h3>
+      ☕ Join Ikafé Haven Loyalty Club
+    </h3>
+    <p>
+      Earn rewards, enjoy exclusive offers, and get more value from every visit.
+    </p>
+    <a
+      href="https://ikafe-loyality-frontend.onrender.com/"
+      target="_blank"
+      class="loyalty-btn">
+      Join Now
+    </a>
+  </div>
 </div>
 
 <!-- TABS -->
@@ -594,9 +702,11 @@
   <div class="item-grid">
     <div class="item"><div class="item-top"><div class="item-name">Black Tea</div><div class="item-price">1,500 <span class="currency">RWF</span></div></div><div class="item-desc">Rwandan black tea.</div><div class="item-divider"></div></div>
     <div class="item"><div class="item-top"><div class="item-name">Rwandan Tea</div><div class="item-price">2,500 <span class="currency">RWF</span></div></div><div class="item-desc">A creamy blend of black tea and milk, without a drop of water.</div><div class="item-divider"></div></div>
-    <div class="item"><div class="item-top"><div class="item-name">African Tea</div><div class="item-price">2,500 <span class="currency">(Cup) / 3,500 (Pot) RWF</span></div></div><div class="item-desc">A full-bodied brew made with Rwandan tea, fresh milk, ginger, lemongrass, and a blend of warming tea masala, simmered to perfection without a drop of water.</div><div class="item-divider"></div></div>
+    <div class="item"><div class="item-top"><div class="item-name">African Tea (Cup)</div><div class="item-price">2,500 <span class="currency">RWF</span></div></div><div class="item-desc">A full-bodied brew made with Rwandan tea, fresh milk, ginger, lemongrass, and a blend of warming tea masala, simmered to perfection without a drop of water.</div><div class="item-divider"></div></div>
+    <div class="item"><div class="item-top"><div class="item-name">African Tea (Pot)</div><div class="item-price">3,500 <span class="currency">RWF</span></div></div><div class="item-desc">A full-bodied brew made with Rwandan tea, fresh milk, ginger, lemongrass, and a blend of warming tea masala, simmered to perfection without a drop of water.</div><div class="item-divider"></div></div>
     <div class="item"><div class="item-top"><div class="item-name">English Tea</div><div class="item-price">3,500 <span class="currency">RWF</span></div></div><div class="item-desc">Black tea served with milk aside.</div><div class="item-divider"></div></div>
-    <div class="item"><div class="item-top"><div class="item-name">Hot Lemon &amp; Ginger</div><div class="item-price">3,000 <span class="currency">(Cup) / 4,000 (Pot) RWF</span></div></div><div class="item-desc">Fresh ginger and lemon steeped in hot water, sweetened with natural honey.</div><div class="item-divider"></div></div>
+    <div class="item"><div class="item-top"><div class="item-name">Hot Lemon &amp; Ginger (Cup)</div><div class="item-price">3,000 <span class="currency">RWF</span></div></div><div class="item-desc">Fresh ginger and lemon steeped in hot water, sweetened with natural honey.</div><div class="item-divider"></div></div>
+    <div class="item"><div class="item-top"><div class="item-name">Hot Lemon &amp; Ginger (Pot)</div><div class="item-price">4,000 <span class="currency">RWF</span></div></div><div class="item-desc">Fresh ginger and lemon steeped in hot water, sweetened with natural honey.</div><div class="item-divider"></div></div>
     <div class="item"><div class="item-top"><div class="item-name">Spiced Tea</div><div class="item-price">4,000 <span class="currency">RWF</span></div></div><div class="item-desc">Black tea infused with ginger, cinnamon, cloves, and cardamom. Sweetened with natural honey.</div><div class="item-divider"></div></div>
     <div class="item"><div class="item-top"><div class="item-name">Wellness Tea</div><div class="item-price">4,500 <span class="currency">RWF</span></div></div><div class="item-desc">A healing blend of hot water, fresh ginger, lemon, umuravumba, mint, and natural honey.</div><div class="item-divider"></div></div>
     <div class="item"><div class="item-top"><div class="item-name">Hibiscus Infusion</div><div class="item-price">4,000 <span class="currency">RWF</span></div></div><div class="item-desc">A vibrant, tangy herbal tea made from dried hibiscus petals — naturally caffeine-free, refreshing, and rich in antioxidants.</div><div class="item-divider"></div></div>
@@ -708,8 +818,10 @@
     <div class="cat-line"></div>
   </div>
   <div class="item-grid">
-    <div class="item"><div class="item-top"><div class="item-name">Mineral Water</div><div class="item-price">1,000 <span class="currency">(500ml) / 1,500 (1L) RWF</span></div></div><div class="item-divider"></div></div>
-    <div class="item"><div class="item-top"><div class="item-name">Soda</div><div class="item-price">1,000 <span class="currency">(300ml) / 1,500 (500ml) RWF</span></div></div><div class="item-divider"></div></div>
+    <div class="item"><div class="item-top"><div class="item-name">Mineral Water (500ml)</div><div class="item-price">1,000 <span class="currency">RWF</span></div></div><div class="item-divider"></div></div>
+    <div class="item"><div class="item-top"><div class="item-name">Mineral Water (1L)</div><div class="item-price">1,500 <span class="currency">RWF</span></div></div><div class="item-divider"></div></div>
+    <div class="item"><div class="item-top"><div class="item-name">Soda (300ml)</div><div class="item-price">1,000 <span class="currency">RWF</span></div></div><div class="item-divider"></div></div>
+    <div class="item"><div class="item-top"><div class="item-name">Soda (500ml)</div><div class="item-price">1,500 <span class="currency">RWF</span></div></div><div class="item-divider"></div></div>
   </div>
 
 </section>
