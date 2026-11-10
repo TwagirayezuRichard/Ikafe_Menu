@@ -718,8 +718,8 @@
         class="loyalty-btn">
         Join Now
       </a>
-      <button type="button" class="install-app-btn" id="installAppButton" onclick="installIkafeApp()">
-        Get the Ikafé Menu App
+      <button type="button" class="install-app-btn" id="installAppButton" onclick="installIkafeApp()" aria-controls="installHelp">
+        Install Ikafé Menu App
       </button>
     </div>
   </div>
@@ -1123,28 +1123,28 @@ function showInstallHelp(platform) {
   const instructions = {
     ios: {
       title: "Add Ikafé Menu to your iPhone",
-      intro: "Install the menu from Safari so it opens like an app from your Home Screen.",
+      intro: "Add this website to your Home Screen to open it like an app. iPhone installs it through Safari, not the App Store.",
       steps: [
-        "Tap the Share button (the square with the up arrow).",
+        "Open this website in Safari, then tap the Share button (the square with the up arrow).",
         'Choose "Add to Home Screen".',
         'Tap "Add" to finish.'
       ]
     },
     android: {
       title: "Install Ikafé Menu on Android",
-      intro: "Use your browser menu to add the menu to your phone.",
+      intro: "This adds the menu website to your phone as an app; it does not download an APK or use Google Play.",
       steps: [
-        "Open this page in Chrome.",
-        'Tap the three-dot menu, then "Install app" or "Add to Home screen".',
-        'Confirm by tapping "Install" or "Add".'
+        'In Chrome, tap "Install" in the prompt if it appears.',
+        'If there is no prompt, open the three-dot menu and tap "Install app" or "Add to Home screen".',
+        "If neither option appears, open the public website over HTTPS in Chrome and try again."
       ]
     },
     other: {
       title: "Install Ikafé Menu on your phone",
-      intro: "Open this menu on your iPhone or Android phone to install it.",
+      intro: "This installs the menu website as an app; there is no separate App Store or APK download.",
       steps: [
-        "Open this same website in Safari on iPhone or Chrome on Android.",
-        'Tap "Get the ikafe\'menu App" and follow the on-screen steps.'
+        "Open this public website in Safari on iPhone or Chrome on Android.",
+        "Tap Install Ikafé Menu App again and follow the instructions for your phone."
       ]
     }
   };
@@ -1165,7 +1165,8 @@ async function installIkafeApp() {
     const prompt = deferredInstallPrompt;
     deferredInstallPrompt = null;
     await prompt.prompt();
-    await prompt.userChoice;
+    const choice = await prompt.userChoice;
+    if (choice.outcome === "dismissed") showInstallHelp("android");
     return;
   }
 
