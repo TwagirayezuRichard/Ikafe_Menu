@@ -583,29 +583,31 @@
   box-shadow: 0 4px 15px rgba(184,144,58,0.4);
 }
 
-.hero-actions {
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  flex-wrap: wrap;
-  gap: 12px;
-}
 .install-app-btn {
-  background: transparent;
-  color: var(--gold-light);
-  border: 2px solid var(--gold);
+  flex: 0 0 auto;
+  align-self: center;
+  background: var(--gold);
+  color: var(--espresso);
+  border: 1px solid var(--gold-light);
   border-radius: 50px;
-  padding: 12px 24px;
-  font: 500 13px 'Jost', sans-serif;
-  letter-spacing: 1px;
+  padding: 10px 18px;
+  font: 500 12px 'Jost', sans-serif;
+  letter-spacing: 1.5px;
+  text-transform: uppercase;
   cursor: pointer;
-  transition: background 0.3s, color 0.3s, transform 0.3s;
+  white-space: nowrap;
+  transition: background 0.3s, color 0.3s, transform 0.3s, box-shadow 0.3s;
 }
 .install-app-btn:hover,
 .install-app-btn:focus-visible {
-  background: var(--gold);
-  color: var(--espresso);
+  background: var(--gold-light);
+  border-color: var(--gold-light);
   transform: translateY(-2px);
+  box-shadow: 0 4px 15px rgba(184,144,58,0.4);
+}
+.install-app-btn:focus-visible {
+  outline: 2px solid var(--cream);
+  outline-offset: 3px;
 }
 .install-help[hidden] { display: none; }
 .install-help {
@@ -647,9 +649,11 @@
   cursor: pointer;
 }
 @media (max-width: 600px) {
-  .hero-actions { flex-direction: column; }
-  .hero-actions .loyalty-btn,
-  .hero-actions .install-app-btn { width: min(100%, 280px); }
+  .install-app-btn {
+    padding: 9px 12px;
+    font-size: 10px;
+    letter-spacing: 1px;
+  }
   .install-help-card { padding: 22px; }
 }
 </style>
@@ -710,23 +714,21 @@
     <p>
       Earn rewards, enjoy exclusive offers, and get more value from every visit.
     </p>
-    <div class="hero-actions">
-      <a
-        href="https://ikafe-loyality-frontend.onrender.com/"
-        target="_blank"
-        rel="noopener noreferrer"
-        class="loyalty-btn">
-        Join Now
-      </a>
-      <button type="button" class="install-app-btn" id="installAppButton" onclick="installIkafeApp()" aria-controls="installHelp">
-        Install Ikafé Menu App
-      </button>
-    </div>
+    <a
+      href="https://ikafe-loyality-frontend.onrender.com/"
+      target="_blank"
+      rel="noopener noreferrer"
+      class="loyalty-btn">
+      Join Now
+    </a>
   </div>
 </div>
 
 <!-- TABS -->
 <nav class="tab-nav">
+  <button type="button" class="install-app-btn" id="installAppButton" onclick="installIkafeApp()" aria-controls="installHelp">
+    Download App
+  </button>
   <button class="tab-btn active" onclick="showTab('drinks')">☕ Drinks</button>
   <button class="tab-btn" onclick="showTab('breakfast')">🍳 Breakfast</button>
   <button class="tab-btn" onclick="showTab('mains')">🍽 Main Courses</button>
@@ -1143,8 +1145,8 @@ function showInstallHelp(platform) {
       title: "Install Ikafé Menu on your phone",
       intro: "This installs the menu website as an app; there is no separate App Store or APK download.",
       steps: [
-        "Open this public website in Safari on iPhone or Chrome on Android.",
-        "Tap Install Ikafé Menu App again and follow the instructions for your phone."
+        "Open the menu website on your iPhone or Android phone.",
+        "On iPhone, open it in Safari. On Android, open it in Chrome and use the browser's Install app or Add to Home screen option."
       ]
     }
   };
@@ -1166,7 +1168,11 @@ async function installIkafeApp() {
     deferredInstallPrompt = null;
     await prompt.prompt();
     const choice = await prompt.userChoice;
-    if (choice.outcome === "dismissed") showInstallHelp("android");
+    if (choice.outcome === "accepted") {
+      installAppButton.hidden = true;
+    } else {
+      showInstallHelp("android");
+    }
     return;
   }
 
